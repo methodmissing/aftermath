@@ -13,4 +13,9 @@ class TestValues < Test::Unit::TestCase
     assert_equal 'Coffee', Category('coffee').name
     assert_raises(ArgumentError){ Category('whiskey') }
   end
+
+  def test_order_status
+    assert_equal 'Open', OrderStatus('open').name
+    assert_raises(ArgumentError){ OrderStatus('invalid') }
+  end
 end
