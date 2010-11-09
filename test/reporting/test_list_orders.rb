@@ -2,7 +2,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   include ReportingTest
 
   def test_order_created
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     dto = view.list.first
     assert_equal uuid, dto.order_id
@@ -16,7 +16,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   end
 
   def test_product_added_to_order
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     view << Event(:ProductAddedToOrder, :order_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :price => 20, :quantity => 2)
     dto = view.list.shift
@@ -25,7 +25,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   end
 
   def test_product_removed_from_order
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     view << Event(:ProductAddedToOrder, :order_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :price => 20, :quantity => 2)
     view << Event(:ProductRemovedFromOrder, :order_id => uuid, :product_id => 1, :unit_price => 10, :price => 20)
@@ -35,7 +35,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   end
 
   def test_order_quantity_updated
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     view << Event(:ProductAddedToOrder, :order_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :price => 20, :quantity => 2)
     view << Event(:OrderQuantityUpdated, :order_id => uuid, :product_id => 1, :unit_price => 10, :price => -10, :quantity => 1)
@@ -45,7 +45,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   end
 
   def test_order_shipped
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     view << Event(:ProductAddedToOrder, :order_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :price => 20, :quantity => 2)
     view << Event(:OrderShipped, :order_id => uuid, :status => 'shipped', :comments => 'On Time!')
@@ -55,7 +55,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   end
 
   def test_order_cancelled
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     view << Event(:ProductAddedToOrder, :order_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :price => 20, :quantity => 2)
     view << Event(:OrderCancelled, :order_id => uuid, :status => 'cancelled', :reason => 'No Stock!')
@@ -65,7 +65,7 @@ class TestReportingListOrders < Test::Unit::TestCase
   end
 
   def test_order_held
-    view = Reporting::ListOrders.new([])
+    view = Reporting::ListOrders.new({})
     view << Event(:OrderCreated, :order_id => uuid, :user_id => 1, :customer_name => 'John', :status => 'open')
     view << Event(:ProductAddedToOrder, :order_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :price => 20, :quantity => 2)
     view << Event(:OrderHeld, :order_id => uuid, :status => 'held', :reason => 'No Monies!')

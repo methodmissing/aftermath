@@ -2,17 +2,17 @@ class Reporting::ListOrders < Aftermath::Handler
   class Dto < Struct.new(:order_id, :user_id, :customer_name, :total, :status)
   end
 
+  def find(uuid)
+    repository[uuid]
+  end
+
   def list
-    repository
+    repository.values
   end
 
   private
-  def find(uuid)
-    repository.find{|r| r.order_id == uuid }
-  end
-
   def handle_order_created(event)
-    repository << Dto.new(event.order_id, event.user_id, event.customer_name, 0, event.status)
+    repository[event.order_id] = Dto.new(event.order_id, event.user_id, event.customer_name, 0, event.status)
   end
 
   def handle_order_quantity_updated(event)

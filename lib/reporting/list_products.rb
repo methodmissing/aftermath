@@ -2,17 +2,17 @@ class Reporting::ListProducts < Aftermath::Handler
   class Dto < Struct.new(:product_id, :name, :sku)
   end
 
+  def find(uuid)
+    repository[uuid]
+  end
+
   def list
-    repository
+    repository.values
   end
 
   private
-  def find(uuid)
-    repository.detect{|p| p.product_id == uuid }
-  end
-
   def handle_product_created(event)
-    repository << Dto.new(event.product_id, event.name, event.sku)
+    repository[event.product_id] = Dto.new(event.product_id, event.name, event.sku)
   end
 
   def handle_product_renamed(event)

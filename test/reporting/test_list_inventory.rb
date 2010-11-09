@@ -2,7 +2,7 @@ class TestReportingListInventory < Test::Unit::TestCase
   include ReportingTest
 
   def test_inventory_created
-    view = Reporting::ListInventory.new([])
+    view = Reporting::ListInventory.new({})
     view << Event(:InventoryCreated, :inventory_id => uuid, :product_id => 1,
                                          :product_name => 'Delta', :rack => 'A',
                                          :shelf => 'X', :quantity => 10)
@@ -18,7 +18,7 @@ class TestReportingListInventory < Test::Unit::TestCase
   end
 
   def test_inventory_added
-    view = Reporting::ListInventory.new([])
+    view = Reporting::ListInventory.new({})
     view << Event(:InventoryCreated, :inventory_id => uuid, :product_id => 1,
                                          :product_name => 'Delta', :rack => 'A',
                                          :shelf => 'X', :quantity => 10)
@@ -28,7 +28,7 @@ class TestReportingListInventory < Test::Unit::TestCase
   end
 
   def test_inventory_removed
-    view = Reporting::ListInventory.new([])
+    view = Reporting::ListInventory.new({})
     view << Event(:InventoryCreated, :inventory_id => uuid, :product_id => 1,
                                          :product_name => 'Delta', :rack => 'A',
                                          :shelf => 'X', :quantity => 10)
