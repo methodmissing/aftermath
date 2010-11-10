@@ -3,5 +3,5 @@ class Events::CartQuantityUpdated < Aftermath::Event
   member :product_id
   member :quantity
   member :unit_price
-  member :price
+  member :cart_total
 end

@@ -20,19 +20,19 @@ class Reporting::ShowCart < Aftermath::Handler
 
   def handle_cart_quantity_updated(event)
     cart = find(event.cart_id)
-    cart.total += event.price
+    cart.total = event.cart_total
     cart.products[event.product_id][1] = event.quantity
   end
 
   def handle_product_added_to_cart(event)
     cart = find(event.cart_id)
-    cart.total += event.price
+    cart.total = event.cart_total
     cart.products[event.product_id] = [event.product_name, event.quantity, event.unit_price]
   end
 
   def handle_product_removed_from_cart(event)
     cart = find(event.cart_id)
-    cart.total -= event.price
+    cart.total = event.cart_total
     cart.products.delete(event.product_id)
   end
 end

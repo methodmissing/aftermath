@@ -13,16 +13,16 @@ class Aggregates::Cart < Aftermath::Aggregate
                                      :product_id => product_id,
                                      :product_name => product_name,
                                      :unit_price => price,
-                                     :price => delta,
+                                     :cart_total => @total + delta,
                                      :quantity => quantity)
   end
 
   def remove_product(product_id, price)
     delta = (@products[product_id] * price)
-    apply Event(:ProductRemovedFromCart, :cart_id => uuid, 
+    apply Event(:ProductRemovedFromCart, :cart_id => uuid,
                                          :product_id => product_id,
                                          :unit_price => price,
-                                         :price => delta)
+                                         :cart_total => @total - delta)
   end
 
   def update_quantity(product_id, price, quantity)
@@ -30,7 +30,7 @@ class Aggregates::Cart < Aftermath::Aggregate
     apply Event(:CartQuantityUpdated, :cart_id => uuid, 
                                       :product_id => product_id,
                                       :unit_price => price,
-                                      :price => delta,
+                                      :cart_total => @total + delta,
                                       :quantity => quantity)
   end
 
@@ -39,11 +39,13 @@ class Aggregates::Cart < Aftermath::Aggregate
   end
 
   def add_coupon(code, discount)
-    apply Event(:CouponAdded, :cart_id => uuid, :code => code, :discount => discount)
+    delta = @total - discount
+    apply Event(:CouponAdded, :cart_id => uuid, :code => code, :discount => discount, :cart_total => delta)
   end
 
   def remove_coupon(code, discount)
-    apply Event(:CouponRemoved, :cart_id => uuid, :code => code, :discount => discount)
+    delta = @total + discount
+    apply Event(:CouponRemoved, :cart_id => uuid, :code => code, :discount => discount, :cart_total => delta)
   end
 
   private
@@ -56,17 +58,17 @@ class Aggregates::Cart < Aftermath::Aggregate
 
   def apply_product_added_to_cart(event)
     @products[event.product_id] = event.quantity
-    @total += event.price
+    @total = event.cart_total
   end
 
   def apply_product_removed_from_cart(event)
     @products.delete(event.product_id)
-    @total -= event.price
+    @total = event.cart_total
   end
 
   def apply_cart_quantity_updated(event)
     @products[event.product_id] = event.quantity
-    @total += event.price
+    @total = event.cart_total
   end
 
   def apply_cart_cleared(event)
@@ -77,10 +79,11 @@ class Aggregates::Cart < Aftermath::Aggregate
 
   def apply_coupon_added(event)
     @coupons[event.code] = event.discount
-    @total -= event.discount
+    @total = event.cart_total
   end
 
   def apply_coupon_removed(event)
-    @total += @coupons.delete(event.code)
+    @coupons.delete(event.code)
+    @total = event.cart_total
   end
 end
