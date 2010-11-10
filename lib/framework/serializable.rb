@@ -4,8 +4,8 @@ module Aftermath::Serializable
   module Dsl
     attr_writer :version
     def reconstitute(json)
-      h = Yajl::Parser.parse(json)
-      o = eval(h.delete('__name__')).new
+      h = Yajl::Parser.parse(json, :symbolize_keys => true)
+      o = eval(h.delete(:__name__)).new
       o.reconstitute(h)
     end
 
@@ -34,7 +34,7 @@ module Aftermath::Serializable
 
   def initialize(data = nil)
     yield self if block_given?
-    reconstitute(data) if data
+    reconstitute(data) if Hash === data
   end
 
   def to_hash
@@ -52,6 +52,9 @@ module Aftermath::Serializable
   end
 
   def reconstitute(data)
+    unless (ex = (data.keys - members)).empty?
+      raise NoMethodError.new("Unsupported contracts #{ex.inspect}")
+    end
     data.each{|k,v| instance_variable_set(:"@#{k}", v) }
     self
   end

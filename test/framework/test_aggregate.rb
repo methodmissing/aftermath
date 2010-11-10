@@ -16,6 +16,13 @@ class TestFrameworkAggregate < Test::Unit::TestCase
     assert_equal 'active', sp.instance_variable_get(:@state)
   end
 
+  def test_reconstitute_unsupported_contracts
+    json = '{"name":"Shipping Lda.","__name__":"Aggregates::ShippingProvider","state":"active","unexpected":"element"}'
+    assert_raises NoMethodError do
+      ShippingProvider.reconstitute(json)
+    end
+  end
+
   def test_snapshot_threshold
     assert_equal 10, ShippingProvider.snapshot_threshold
   end
