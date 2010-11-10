@@ -14,7 +14,7 @@ class Reporting::OrderDetails < Aftermath::Handler
 
   def handle_order_quantity_updated(event)
     order = find(event.order_id)
-    order.total += event.price
+    order.total = event.order_total
     order.products[event.product_id][1] = event.quantity
   end
 
@@ -38,13 +38,13 @@ class Reporting::OrderDetails < Aftermath::Handler
 
   def handle_product_added_to_order(event)
     order = find(event.order_id)
-    order.total += event.price
+    order.total = event.order_total
     order.products[event.product_id] = [event.product_name, event.quantity, event.unit_price]
   end
 
   def handle_product_removed_from_order(event)
     order = find(event.order_id)
-    order.total -= event.price
+    order.total = event.order_total
     order.products.delete(event.product_id)
   end
 end

@@ -25,9 +25,9 @@ class TestReportingShowCart < Test::Unit::TestCase
     view = Reporting::ShowCart.new({})
     view << Event(:CartCreated, :cart_id => uuid)
     view << Event(:ProductAddedToCart, :cart_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :cart_total => 20, :quantity => 2)
-    view << Event(:ProductRemovedFromCart, :cart_id => uuid, :product_id => 1, :unit_price => 10, :cart_total => 20)
+    view << Event(:ProductRemovedFromCart, :cart_id => uuid, :product_id => 1, :unit_price => 10, :cart_total => 10)
     dto = view.find(uuid)
-    assert_equal 20, dto.total
+    assert_equal 10, dto.total
     assert dto.products.empty?
     assert dto.coupons.empty?
   end
@@ -35,7 +35,7 @@ class TestReportingShowCart < Test::Unit::TestCase
   def test_cart_cleared
     view = Reporting::ShowCart.new({})
     view << Event(:CartCreated, :cart_id => uuid)
-    view << Event(:ProductAddedToCart, :cart_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :cart_total => 20, :quantity => 2)
+    view << Event(:ProductAddedToCart, :cart_id => uuid, :product_id => 1, :product_name => 'Delta', :unit_price => 10, :cart_total => 0, :quantity => 2)
     view << Event(:CartCleared, :cart_id => uuid)
     dto = view.find(uuid)
     assert_equal 0, dto.total

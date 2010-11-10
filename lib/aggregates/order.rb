@@ -21,7 +21,7 @@ class Aggregates::Order < Aftermath::Aggregate
                                       :product_id => product_id,
                                       :product_name => product_name,
                                       :unit_price => price,
-                                      :price => delta,
+                                      :order_total => @total + delta,
                                       :quantity => quantity)
   end
 
@@ -30,7 +30,7 @@ class Aggregates::Order < Aftermath::Aggregate
     apply Event(:ProductRemovedFromOrder, :order_id => uuid,
                                           :product_id => product_id, 
                                           :unit_price => price,
-                                          :price => delta)
+                                          :order_total => @total - delta)
   end
 
   def update_quantity(product_id, price, quantity)
@@ -38,7 +38,7 @@ class Aggregates::Order < Aftermath::Aggregate
     apply Event(:OrderQuantityUpdated, :order_id => uuid, 
                                        :product_id => product_id,
                                        :unit_price => price,
-                                       :price => delta,
+                                       :order_total => @total + delta,
                                        :quantity => quantity)
   end
 
@@ -67,17 +67,17 @@ class Aggregates::Order < Aftermath::Aggregate
 
   def apply_product_added_to_order(event)
     @products[event.product_id] = event.quantity
-    @total += event.price
+    @total = event.order_total
   end
 
   def apply_product_removed_from_order(event)
     @products.delete(event.product_id)
-    @total -= event.price
+    @total = event.order_total
   end
 
   def apply_order_quantity_updated(event)
     @products[event.product_id] = event.quantity
-    @total += event.price
+    @total = event.order_total
   end
 
   def apply_order_cancelled(event)
