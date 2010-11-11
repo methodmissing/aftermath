@@ -11,7 +11,7 @@ class Reporting::InventoryDetails < Aftermath::View
 
   def self.handle_inventory_added(event)
     inventory = find(event.inventory_id)
-    inventory.quantity += event.quantity
+    inventory.quantity = event.quantity
   end
 
   def self.handle_inventory_relocated(event)
@@ -22,6 +22,6 @@ class Reporting::InventoryDetails < Aftermath::View
 
   def self.handle_inventory_removed(event)
     inventory = find(event.inventory_id)
-    inventory.quantity -= event.quantity
+    inventory.quantity = event.quantity
   end
 end

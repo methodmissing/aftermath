@@ -20,7 +20,7 @@ class TestReportingListInventory < Test::Unit::TestCase
     Reporting << Event(:InventoryCreated, :inventory_id => uuid, :product_id => 1,
                                          :product_name => 'Delta', :rack => 'A',
                                          :shelf => 'X', :quantity => 10)
-    Reporting << Event(:InventoryAdded, :inventory_id => uuid, :product_id => 1, :quantity => 5)
+    Reporting << Event(:InventoryAdded, :inventory_id => uuid, :product_id => 1, :quantity => 15)
     dto = Reporting.list_inventory.filter.shift
     assert_equal 15, dto.quantity
   end

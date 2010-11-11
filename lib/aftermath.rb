@@ -28,7 +28,6 @@ module Aftermath
   component :Event
   component :Repository
   component :DomainRepository
-  component :ViewRepository
   component :EventStore
   component :Message
   component :Handler

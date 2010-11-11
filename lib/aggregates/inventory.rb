@@ -17,11 +17,11 @@ class Aggregates::Inventory < Aftermath::Aggregate
   end
 
   def add_stock(quantity)
-    apply Event(:InventoryAdded, :inventory_id => uuid, :product_id => @product_id, :quantity => quantity)
+    apply Event(:InventoryAdded, :inventory_id => uuid, :product_id => @product_id, :quantity => @quantity + quantity)
   end
 
   def remove_stock(quantity)
-    apply Event(:InventoryRemoved, :inventory_id => uuid, :product_id => @product_id, :quantity => quantity)
+    apply Event(:InventoryRemoved, :inventory_id => uuid, :product_id => @product_id, :quantity => @quantity - quantity)
   end
 
   def relocate(rack, shelf)
@@ -39,11 +39,11 @@ class Aggregates::Inventory < Aftermath::Aggregate
   end
 
   def apply_inventory_added(event)
-    @quantity += event.quantity
+    @quantity = event.quantity
   end
 
   def apply_inventory_removed(event)
-    @quantity -= event.quantity
+    @quantity = event.quantity
   end
 
   def apply_inventory_relocated(event)
