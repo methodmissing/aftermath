@@ -1,3 +1,18 @@
+# An Aggregate is an instance of a process and usually wraps a few Entities.
+# Always a single unit of work - a transactional or consistency boundary that represents
+# a task - it either fails or succeeds.
+#
+# Example:
+#
+#  A Shopping Cart aggregate is responsible for managing Cart Items.
+#
+#  AddProductToCart -> Cart -> ProductAddedToCart
+#
+#  We'd always manipulate Cart Items via a Cart.A Cart Item also don't have a unique identity
+#  outside it's Cart boundary, whilst a Cart would have an identity within the application /
+# system.
+#
+
 class Aftermath::Aggregate
   include Aftermath::Serializable
   extend Aftermath::Serializable::Dsl

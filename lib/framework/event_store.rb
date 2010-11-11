@@ -1,9 +1,24 @@
+# An Event Store for deltas (state changes) to Aggregates in our core domain.
+#
+# Implements the following contracts :
+#
+#   find #=> retrieves events / state changes for the aggregate, used for rebuilding to current
+#            state
+#
+#   save #=> attempts to persist an aggregate with it's relevant changes as a single unit of
+#            work.
+#
+#   subscribe #=> subscription hook for republished events (External Events)
+#
+
 require 'sqlite3'
 
 class Aftermath::EventStore
   class AggregateNotFound < StandardError; end
   class ConcurrencyError < StandardError; end
 
+  # For demonstrating an example Event Store schema
+  #
   SCHEMA = %[CREATE TABLE events(
               aggregate_id GUID,
               aggregate_type VARCHAR,
@@ -32,6 +47,10 @@ class Aftermath::EventStore
     events
   end
 
+  # Aggregate persistence - stores the Aggregate along with any state changes.State changes
+  # is republished to subscribers (most notably the read model) on success.We're generating
+  # a SQL snippet and execute them in batch in a single transaction.
+  #
   def save(aggregate_type, aggregate_id, events, expected_version = 0)
     sql, version = [], nil
     @storage.transaction do |s|
@@ -45,11 +64,14 @@ class Aftermath::EventStore
       end
       sql << "UPDATE aggregates SET version = #{version} WHERE aggregate_id = '#{aggregate_id}'"
       s.execute_batch(sql.join(";\n"))
+      # XXX within a transactional context, republishing stored events may still fail
+      events.each{|e| publish(e) }
     end
-    events.each{|e| publish(e) }
     version
   end
 
+  # Subscription for External (republished) Events
+  #
   def subscribe(&b)
     @publisher.subscribe(&b)
   end

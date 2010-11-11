@@ -1,3 +1,6 @@
+# Dead simple in process pub/sub channel.
+#
+
 class Aftermath::Channel
   def initialize
     @subscribers = []

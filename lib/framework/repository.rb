@@ -1,3 +1,6 @@
+# A Repository interface for use in our core Domain.
+#
+
 class Aftermath::Repository
   def initialize(storage)
     @storage = storage

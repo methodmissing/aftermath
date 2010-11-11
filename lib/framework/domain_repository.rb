@@ -1,3 +1,12 @@
+# The storage mechanism for our core domain.It provides a very simple contract :
+#
+#  #find(uuid)
+#  #save(aggregate, version)
+#
+# This repository interface is backed by an Event and Aggregate Store which serves as a history
+# of intent and allows for rebuiling Aggregates form stored events.
+#
+
 class Aftermath::DomainRepository < Aftermath::Repository
   def find(uuid)
     events = @storage.find(uuid)

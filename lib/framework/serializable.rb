@@ -1,3 +1,8 @@
+# A serialization interface that saves to and reconstitutes from JSON using the memento pattern
+# in favor of native language serialization.Notice that we don't do any type coercion to not
+# detract towards technical details.
+#
+
 require 'yajl'
 
 module Aftermath::Serializable

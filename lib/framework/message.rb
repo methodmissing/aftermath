@@ -1,3 +1,7 @@
+# A serializable message interface which powers all Commands and Events.Both of them have
+# similar structure (also no behavior), but just differ in intent.
+#
+
 module Aftermath::Message
   include Aftermath::Serializable
   def self.included(klass)

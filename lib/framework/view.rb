@@ -1,3 +1,6 @@
+# Represents a View or Query for the UI / reporting component
+#
+
 class Aftermath::View
   extend Aftermath::Handler
 
