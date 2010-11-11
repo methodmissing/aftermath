@@ -11,8 +11,7 @@ infrastructure.
 
 Directory layout :
 
- * lib/aggregates       - aggregates with public behavior methods and private event
-                          handlers
+ * lib/aggregates       - aggregates with public behavior methods and private event handlers
  * lib/command_handlers - example
  * iib/commands         - commands (behaviors, task, intent)
  * lib/domain           - supporting domain code, mostly value objects
@@ -43,7 +42,7 @@ noise of technical masturbation.
 
 # CQRS resources
 
-  [Starting point](http://abdullin.com/cqrs/)
-  [By Pål Fossmo](http://blog.fossmo.net/post/Command-and-Query-Responsibility-Segregation-(CQRS).aspx)
-  [CQRS and Event Sourcing](http://codebetter.com/blogs/gregyoung/archive/2010/02/13/cqrs-and-event-sourcing.aspx)
-  [Clarified CQRS](http://www.udidahan.com/2009/12/09/clarified-cqrs/)
+  * [Starting point](http://abdullin.com/cqrs/)
+  * [By Pål Fossmo](http://blog.fossmo.net/post/Command-and-Query-Responsibility-Segregation-(CQRS).aspx)
+  * [CQRS and Event Sourcing](http://codebetter.com/blogs/gregyoung/archive/2010/02/13/cqrs-and-event-sourcing.aspx)
+  * [Clarified CQRS](http://www.udidahan.com/2009/12/09/clarified-cqrs/)
