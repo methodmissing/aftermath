@@ -2,7 +2,7 @@
 
 An example (and work in progress) Ruby implementation of CQRS (Command and Query Responsibility Segregation) as a reference for a [session](http://codebits.eu/intra/s/session/168) at [SAPO Codebits 2010](http://www.codebits.eu)
 
-![Conceptual View](/assets/cqrs.jpg)
+![Conceptual View](https://github.com/methodmissing/aftermath/raw/master/assets/cqrs.png)
 
 # Implementation notes
 
