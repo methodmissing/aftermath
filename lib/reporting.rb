@@ -10,7 +10,7 @@ module Reporting
     end
 
     def handle(event)
-      router[event.to_handler].each{|v| v.handle(event) }
+      events << event
     end
     alias << handle
 
@@ -22,20 +22,14 @@ module Reporting
       @events ||= Aftermath::Channel.new
     end
 
-    def boot(rep = nil)
-      @repository = rep
+    def boot
       views.each do |v|
-        v.methods(true).grep(/handle_/).each{|m| router[m.gsub!(/handle_/,'')] << v }
+        subscribe{|e| v << e }
       end
     end
 
     def views
       @views ||= []
-    end
-
-    private
-    def router
-      @router ||= Hash.new{|h,k| h[k] = []}
     end
   end
 

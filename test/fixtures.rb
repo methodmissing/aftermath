@@ -58,3 +58,6 @@ class Events::ShippingProviderDeactivated < Aftermath::Event
   member :provider_id
   member :reason
 end
+
+class ProductView < Aftermath::View
+end

@@ -1,6 +1,7 @@
 module Aftermath::Handler
   def handle(msg)
-    __send__ :"handle_#{msg.to_handler}", msg
+    handler = :"handle_#{msg.to_handler}"
+    __send__ handler, msg if respond_to?(handler)
   end
   alias << handle
 end
