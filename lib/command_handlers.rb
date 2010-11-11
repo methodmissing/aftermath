@@ -1,5 +1,5 @@
-class CommandHandlers < Aftermath::Handler
-  include Aggregates
+class CommandHandlers
+  include Aftermath::Handler, Aggregates
 
   def self.handler(h)
     require "command_handlers/#{h.to_s.to_underscore}"
@@ -37,6 +37,10 @@ class CommandHandlers < Aftermath::Handler
   handler :UpdateOrderQuantity
   handler :CreateInventory
 
+  def initialize(repository)
+    @repository = repository
+  end
+
   def handle(msg)
     if Aftermath.tracing?
       puts "\n---------- begin consistency boundary ----------"
@@ -45,4 +49,7 @@ class CommandHandlers < Aftermath::Handler
     super
   end
   alias << handle
+
+  private
+  def repository; @repository; end
 end

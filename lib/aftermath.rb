@@ -33,7 +33,7 @@ module Aftermath
   component :Message
   component :Handler
   component :Serializable
-  component :Query
+  component :View
   component :Domain
 
   # value added

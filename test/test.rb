@@ -5,6 +5,7 @@ require 'sqlite3'
 Events.assert
 Commands.assert
 Aggregates.assert
+Reporting.boot
 
 require File.expand_path('fixtures.rb', 'test')
 
@@ -54,6 +55,12 @@ module AggregateTest
 end
 
 module ReportingTest
+  def self.included(klass)
+    klass.class_eval do
+      def setup; Reporting.views.each{|v| v.repository.clear }; end
+    end
+  end
+
   def uuid
     @uuid ||= Aftermath.uuid
   end  
